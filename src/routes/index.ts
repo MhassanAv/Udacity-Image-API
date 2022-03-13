@@ -30,11 +30,14 @@ routes.get('/', (req: express.Request, res: express.Response): void => {
   } else {
     resizeImage(userData.filename, userData.width, userData.height);
     setTimeout(function(): void {
-      res.sendFile(
-        `${userData.filename}_resized_${userData.height}X${userData.width}.jpg`,
-        { root: 'temp' }
-      );
-    }, 200);
+      if (userData.filename !== '') {
+        //here is the fix for (no such directory or file), didn't need to use fs.mkdir
+        res.sendFile(
+          `${userData.filename}_resized_${userData.height}X${userData.width}.jpg`,
+          { root: 'temp' }
+        );
+      }
+    }, 300);
   }
 });
 

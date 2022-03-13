@@ -80,7 +80,7 @@ routes.get('/', function(req, res) {
         .concat(userData.height, 'X')
         .concat(userData.width, '.jpg'),
       { root: 'temp' }
-    );
+    ); // I added the functionality to do serverl sizes of the same image
   } else {
     (0, imgProcess_1.default)(
       userData.filename,
@@ -88,14 +88,17 @@ routes.get('/', function(req, res) {
       userData.height
     );
     setTimeout(function() {
-      res.sendFile(
-        ''
-          .concat(userData.filename, '_resized_')
-          .concat(userData.height, 'X')
-          .concat(userData.width, '.jpg'),
-        { root: 'temp' }
-      );
-    }, 200);
+      if (userData.filename !== '') {
+        //here is the fix for (no such directory or file), didn't need to use fs.mkdir
+        res.sendFile(
+          ''
+            .concat(userData.filename, '_resized_')
+            .concat(userData.height, 'X')
+            .concat(userData.width, '.jpg'),
+          { root: 'temp' }
+        );
+      }
+    }, 300);
   }
 });
 exports.default = routes;
